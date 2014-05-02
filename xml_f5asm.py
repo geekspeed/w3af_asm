@@ -226,8 +226,6 @@ class xml_f5asm(OutputPlugin):
         #vulns = kb.kb.get_all_vulns()
         for i in vulns:
 		vulnerability_element = self._asmfile.createElement("vulnerability")
-		om.out.information("\n[*]%s" % i.get_name())
-		om.out.information("\n[*]%s" % i.get_desc())
 		name_node = self._asmfile.createElement("name")
 		name = self._asmfile.createTextNode(str(i.get_name()))
 		name_node.appendChild(name)
@@ -237,26 +235,22 @@ class xml_f5asm(OutputPlugin):
 				strDesc = str(i.get_desc())
 				lindex = strDesc.find(str(k))
 				lindex = lindex+1
-				om.out.information("ATK: %s [%d]" % (str(k),lindex))
 				if lindex > 0:
-					om.out.information("ATTACK_TYPE: %s -> %s" % (k,self._attack_type[k]))
 					self.s_attack_type = self._attack_type[k]					
 					break
-		om.out.information("Attack Type: %s" % self.s_attack_type)
 		attack_type_node = self._asmfile.createElement("attack_type")
 		attack_type = self._asmfile.createTextNode(self.s_attack_type)
 		attack_type_node.appendChild(attack_type)
 		if i.get_url():
-        		om.out.information("\n[*]URL %s \n" % i.get_url())
 			vurl = str(i.get_url())
 			url_node = self._asmfile.createElement("url")
 			url = self._asmfile.createTextNode(vurl)
 			url_node.appendChild(url)
 		if i.get_dc():
         		param = str(i.get_dc())
-			om.out.information("\n[*]PARAMETERS: %s" % param )
 		else:
 			param = " "
+
 		parameter_node = self._asmfile.createElement("parameter")
 		parameter = self._asmfile.createTextNode(param)
 		parameter_node.appendChild(parameter)
@@ -311,7 +305,7 @@ class xml_f5asm(OutputPlugin):
         :return: A DETAILED description of the plugin functions and features.
         """
         return """
-        This plugin writes the framework messages to an XML report file.
+        This plugin writes the vulnerability messages to an F5 ASM XML import file.
 
         One configurable parameter exists:
             - output_file
