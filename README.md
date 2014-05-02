@@ -19,7 +19,7 @@ Command line:
   set output_file /tmp/f5asm.xml
 
 Output
-_______
+-------
 The output is based on the generic_scanner.xsd that F5 provides. Similar to this:
 
   <?xml version="1.0" encoding="UTF-8"?>
