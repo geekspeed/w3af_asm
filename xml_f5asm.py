@@ -150,7 +150,7 @@ class xml_f5asm(OutputPlugin):
                                 plugins for that type of plugin.
         :param optionsDict: A dict with the options for every plugin.
         """
-       pass
+        pass
         
     def end(self):
         """
