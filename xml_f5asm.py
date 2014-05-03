@@ -42,16 +42,6 @@ from w3af.core.data.options.option_types import OUTPUT_FILE
 from w3af.core.data.options.option_list import OptionList
 from w3af.core.data.url.HTTPRequest import HTTPRequest
 
-# Override builtin 'str' function in order to avoid encoding
-# errors while generating objects' utf8 bytestring representations.
-# Note that this 'str' re-definition only will be available within
-# this module's scope.
-str = partial(smart_str, encoding='utf8', errors='xmlcharrefreplace')
-
-NON_BIN = ('atom+xml', 'ecmascript', 'EDI-X12', 'EDIFACT', 'json',
-           'javascript', 'rss+xml', 'soap+xml', 'font-woff',
-           'xhtml+xml', 'xml-dtd', 'xop+xml')
-
 class xml_f5asm(OutputPlugin):
     """
     Create a file for import into F5's ASM platform
@@ -160,59 +150,7 @@ class xml_f5asm(OutputPlugin):
                                 plugins for that type of plugin.
         :param optionsDict: A dict with the options for every plugin.
         """
-        # Add the user configured targets to scaninfo
-        strTargets = ''
-        for url in cf.cf.get('targets'):
-            strTargets += str(url) + ","
-        # self._scanInfo.setAttribute("target", strTargets[:-1])
-
-    def report_http_action(self, parentNode, action):
-        """
-        Write out the request/response in a more parseable XML format will factor
-        anything with a content-type not prefixed with a text/ in a CDATA.
-
-        parent - the parent node (eg httprequest/httpresponse)
-        action - either a details.request or details.response
-        """
-        headers, body = self.handle_headers(parentNode, action)
-        
-        if body:
-            self.handle_body(parentNode, headers, body)
-
-    def handle_headers(self, parentNode, action):
-        #escape_nulls = lambda str: str.replace('\0', 'NULL')
-        if isinstance(action, HTTPRequest):
-            headers = action.get_headers()
-            body = str(action.get_data() or '')
-            status = action.get_request_line()
-        else:
-            headers = action.headers
-            body = str(action.body or '')
-            status = action.get_status_line()
-
-        # Put out the status as an element
-        # actionStatusNode = self._xmldoc.createElement("status")
-        # strip is to try and remove the extraneous newline
-        # actionStatus = self._xmldoc.createTextNode(status.strip())
-        # actionStatusNode.appendChild(actionStatus)
-        # parentNode.appendChild(actionStatusNode)
-
-        # Put out the headers as XML entity
-        # actionHeadersNode = self._xmldoc.createElement("headers")
-        #for (header, header_content) in headers.iteritems():
-        #    headerdetail = self._xmldoc.createElement("header")
-        #    headerdetail.setAttribute("content", str(header_content))
-        #    headerdetail.setAttribute("field", str(header))
-        #    actionHeadersNode.appendChild(headerdetail)
-        #parentNode.appendChild(actionHeadersNode)
-
-        return headers, body
-    
-    def handle_body(self, parentNode, headers, body):
-        """
-        Create the XML tags that hold the http request or response body
-        """    
-        pass
+       pass
         
     def end(self):
         """
